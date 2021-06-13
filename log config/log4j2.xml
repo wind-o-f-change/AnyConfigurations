@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+    <Appenders>
+        <Console name="console" target="SYSTEM_OUT">
+            <PatternLayout
+                    pattern="%style{%d{ISO8601}}{black} [%highlight{%-5level}] %style{%C{1}}{bright,yellow}: %msg%n%throwable"/>
+        </Console>
+
+        <RollingFile name="file"
+                     fileName="/opt/uad/logs/uad-logger-log4j2.log"
+                     filePattern="/opt/uad/logs/$${date:yyyy-MM}/uadlogs-archive_time-%d{HH-mm-ss_}$${date:yyyy-MM}__%i.log.gz">
+            <PatternLayout>
+                <pattern>[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} %c{} - %msg%n</pattern>
+            </PatternLayout>
+            <Policies>
+                <!--                <OnStartupTriggeringPolicy/>-->
+                <SizeBasedTriggeringPolicy size="5MB"/>
+                <!--                <TimeBasedTriggeringPolicy/>-->
+            </Policies>
+            <DefaultRolloverStrategy max="40"/>
+
+        </RollingFile>
+    </Appenders>
+
+    <Loggers>
+        <!--  logging done by any class in this package -->
+        <!--    "ON"    -->
+        <Logger name="org.springframework.web.servlet.DispatcherServlet" level="debug"/>
+
+        <!--    "OFF"    -->
+        <Logger name="org.apache" level="warn"/>
+        <Logger name="org.janusgraph" level="warn"/>
+        <Logger name="org.hibernate" level="warn"/>
+        <Logger name="com.zaxxer" level="warn"/>
+        <Logger name="org.springframework.web.client.RestTemplate" level="warn"/>
+        <Logger name="org.springframework.web.HttpLogging" level="warn"/>
+        <Logger name="springfox.documentation.spring.web.readers.operation.CachingOperationNameGenerator" level="warn"/>
+
+        <Root level="info">
+            <AppenderRef ref="console" level="info"/>
+            <AppenderRef ref="file"/>
+        </Root>
+
+    </Loggers>
+
+</Configuration>
